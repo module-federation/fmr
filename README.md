@@ -1,4 +1,4 @@
-# webpack-livereload-plugin
+# WIP: Federated Module Reload
 
 [![CI][ci]][ci-url]
 [![node][node]][node-url]
