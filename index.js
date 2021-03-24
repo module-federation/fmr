@@ -1,6 +1,6 @@
 /* jshint node:true */
 const crypto = require('crypto');
-const lr = require('./tiny-lr');
+const lr = require('./tiny-lr/lib');
 const portfinder = require('portfinder');
 const anymatch = require('anymatch');
 const servers = {};

@@ -1,12 +1,11 @@
-import Server from './server';
-import Client from './client';
+const Server = require('./server');
+const Client=  require('./client');
 
 const debug = require('debug')('tinylr');
 
 // Need to keep track of LR servers when notifying
 const servers = [];
-
-export default tinylr;
+module.exports = tinylr;
 
 // Expose Server / Client objects
 tinylr.Server = Server;

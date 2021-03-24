@@ -1,12 +1,12 @@
-import fs      from 'fs';
-import http    from 'http';
-import https   from 'https';
-import events  from 'events';
-import {parse} from 'url';
-import Client  from './client';
-import config  from '../package.json';
-import anybody from 'body/any';
-import qs      from 'qs';
+const fs      = require( 'fs');
+const http    = require( 'http');
+const https   = require( 'https');
+const events  = require( 'events');
+const {parse} = require( 'url');
+const Client  = require( './client');
+const config  = require( '../package.json');
+const anybody = require( 'body/any');
+const qs      = require( 'qs');
 
 const debug = require('debug')('tinylr:server');
 
@@ -319,4 +319,4 @@ class Server extends events.EventEmitter {
   }
 }
 
-export default Server;
+module.exports = Server;

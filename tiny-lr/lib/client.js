@@ -1,14 +1,14 @@
-import events       from 'events';
-import WebSocket    from 'faye-websocket';
-import objectAssign from 'object-assign';
+const events = require('events');
+const WebSocket = require('faye-websocket');
+const objectAssign = require('object-assign');
 
 const debug = require('debug')('tinylr:client');
 
 let idCounter = 0;
 
-export default class Client extends events.EventEmitter {
+module.exports = class Client extends events.EventEmitter {
 
-  constructor (req, socket, head, options = {}) {
+  constructor(req, socket, head, options = {}) {
     super();
     this.options = options;
     this.ws = new WebSocket(req, socket, head);
@@ -17,12 +17,12 @@ export default class Client extends events.EventEmitter {
     this.id = this.uniqueId('ws');
   }
 
-  message (event) {
+  message(event) {
     let data = this.data(event);
     if (this[data.command]) return this[data.command](data);
   }
 
-  close (event) {
+  close(event) {
     if (this.ws) {
       this.ws.close();
       this.ws = null;
@@ -32,7 +32,7 @@ export default class Client extends events.EventEmitter {
   }
 
   // Commands
-  hello () {
+  hello() {
     this.send({
       command: 'hello',
       protocols: [
@@ -42,19 +42,19 @@ export default class Client extends events.EventEmitter {
     });
   }
 
-  info (data) {
+  info(data) {
     if (data) {
       debug('Info', data);
-      this.emit('info', objectAssign({}, data, { id: this.id }));
+      this.emit('info', objectAssign({}, data, {id: this.id}));
       this.plugins = data.plugins;
       this.url = data.url;
     }
 
-    return objectAssign({}, data || {}, { id: this.id, url: this.url });
+    return objectAssign({}, data || {}, {id: this.id, url: this.url});
   }
 
   // Server commands
-  reload (files) {
+  reload(files) {
     files.forEach(function (file) {
       this.send({
         command: 'reload',
@@ -66,7 +66,7 @@ export default class Client extends events.EventEmitter {
     }, this);
   }
 
-  alert (message) {
+  alert(message) {
     this.send({
       command: 'alert',
       message: message
@@ -74,20 +74,21 @@ export default class Client extends events.EventEmitter {
   }
 
   // Utilities
-  data (event) {
+  data(event) {
     let data = {};
     try {
       data = JSON.parse(event.data);
-    } catch (e) {}
+    } catch (e) {
+    }
     return data;
   }
 
-  send (data) {
+  send(data) {
     if (!this.ws) return;
     this.ws.send(JSON.stringify(data));
   }
 
-  uniqueId (prefix) {
+  uniqueId(prefix) {
     let id = idCounter++;
     return prefix ? prefix + id : id;
   }
